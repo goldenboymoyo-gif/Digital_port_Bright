@@ -211,7 +211,9 @@ export class SceneForest {
     const intersects = this.raycaster.intersectObjects(meshes)
     if (intersects.length > 0) {
       const treeIndex = intersects[0].object.userData.treeIndex
-      this._openProject(treeIndex)
+      const project = this.trees[treeIndex]?.userData?.project
+      const url = project?.demo || project?.github
+      if (url) window.open(url, '_blank', 'noopener')
     }
   }
 
