@@ -1,0 +1,114 @@
+.scene--void {
+  background: var(--color-bg);
+}
+
+.scene--void .scene__title-glitch {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 12vw, 10rem);
+  font-weight: 800;
+  color: var(--color-primary);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  position: relative;
+  opacity: 0;
+}
+
+.scene--void .scene__title-glitch::before,
+.scene--void .scene__title-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.scene--void .scene__title-glitch::before {
+  color: var(--color-accent);
+  animation: glitchShift 4s infinite linear alternate-reverse;
+  clip-path: inset(0 0 60% 0);
+  opacity: 0.3;
+}
+
+.scene--void .scene__title-glitch::after {
+  color: var(--color-secondary);
+  animation: glitchShift 3s infinite linear alternate;
+  clip-path: inset(60% 0 0 0);
+  opacity: 0.3;
+}
+
+@keyframes glitchShift {
+  0% { transform: translate(0); opacity: 0.3; }
+  20% { transform: translate(-2px, 2px); opacity: 0.5; }
+  40% { transform: translate(2px, -1px); opacity: 0.2; }
+  60% { transform: translate(-1px, 3px); opacity: 0.4; }
+  80% { transform: translate(3px, 1px); opacity: 0.3; }
+  100% { transform: translate(0); opacity: 0.3; }
+}
+
+.scene--void .scene__subtitle {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 3vw, 1.75rem);
+  font-weight: 300;
+  color: var(--color-text-muted);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-top: 1rem;
+  opacity: 0;
+  animation: fadeUp 1.5s var(--transition-smooth) 2.5s forwards;
+}
+
+.scene--void .scene__location {
+  font-family: var(--font-body);
+  font-size: clamp(0.8rem, 1.5vw, 1rem);
+  color: var(--color-text-muted);
+  letter-spacing: 0.15em;
+  margin-top: 0.5rem;
+  opacity: 0;
+  animation: fadeUp 1.5s var(--transition-smooth) 3s forwards;
+}
+
+.scene--void .scene__scroll-cta {
+  position: absolute;
+  bottom: 4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0;
+  animation: fadeUp 1s var(--transition-smooth) 4s forwards;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.scene--void .scene__scroll-cta span {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  color: var(--color-text-muted);
+}
+
+.scene--void .scene__scroll-arrow {
+  width: 1px;
+  height: 30px;
+  background: linear-gradient(to bottom, var(--color-text-muted), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 1; transform: scaleY(1); }
+  50% { opacity: 0.3; transform: scaleY(0.5); }
+}
+
+@keyframes fadeUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .scene--void .scene__title-glitch {
+    font-size: clamp(2.5rem, 15vw, 4rem);
+  }
+}

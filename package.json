@@ -1,0 +1,12 @@
+{
+  "name": "bright-moyo-portfolio",
+  "version": "1.0.0",
+  "description": "Cinematic portfolio for Bright Moyo",
+  "scripts": {
+    "dev": "npx serve . -l 3000",
+    "start": "npx serve . -l 3000"
+  },
+  "keywords": ["portfolio", "cinematic", "threejs", "gsap"],
+  "author": "Bright Moyo",
+  "license": "MIT"
+}

@@ -1,0 +1,119 @@
+.scene--forest {
+  background: linear-gradient(180deg, #0a1628 0%, #0a0a0f 50%, #0d1b0a 100%);
+}
+
+.scene--forest .scene__content--forest {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding: 6rem 2rem 2rem;
+  text-align: center;
+}
+
+.forest__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-overlay) + 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s var(--transition-smooth);
+}
+
+.forest__overlay.is-visible {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.forest__project-card {
+  max-width: 480px;
+  width: 90%;
+  padding: 2rem;
+  position: relative;
+  transform: scale(0.9) translateY(20px);
+  transition: transform 0.5s var(--transition-bounce);
+}
+
+.forest__overlay.is-visible .forest__project-card {
+  transform: scale(1) translateY(0);
+}
+
+.forest__project-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.forest__project-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-primary);
+}
+
+.forest__project-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 0.75rem;
+}
+
+.forest__project-desc {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.forest__project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.forest__project-tech span {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 0.25rem 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 100px;
+  color: var(--color-text-muted);
+}
+
+.forest__project-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.forest__project-link {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.6rem 1.2rem;
+  border: 1px solid var(--color-secondary);
+  border-radius: var(--radius-sm);
+  color: var(--color-secondary);
+  transition: all 0.3s var(--transition-smooth);
+}
+
+.forest__project-link:hover {
+  background: var(--color-secondary);
+  color: var(--color-bg);
+}

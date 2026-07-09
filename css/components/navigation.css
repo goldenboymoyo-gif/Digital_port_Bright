@@ -1,0 +1,226 @@
+.nav {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-nav);
+  pointer-events: none;
+}
+
+.nav__compass {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0;
+  transform: translateY(-10px);
+  animation: navFadeIn 1s var(--transition-smooth) 2s forwards;
+}
+
+.nav__compass-ring {
+  width: 48px;
+  height: 48px;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: transform 0.3s var(--transition-smooth);
+}
+
+.nav__compass-ring:hover {
+  transform: scale(1.1);
+}
+
+.nav__compass-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.nav__compass-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.nav__minimap {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0;
+  transform: translateY(-10px);
+  animation: navFadeIn 1s var(--transition-smooth) 2.5s forwards;
+}
+
+.nav__minimap-dots {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 8px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.nav__minimap-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  pointer-events: auto;
+  cursor: pointer;
+  transition: all 0.3s var(--transition-smooth);
+}
+
+.nav__minimap-dot:hover {
+  background: rgba(255, 255, 255, 0.5);
+  transform: scale(1.5);
+}
+
+.nav__minimap-dot.active {
+  background: var(--color-secondary);
+  box-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
+}
+
+.nav__progress {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  opacity: 0;
+  animation: navFadeIn 1s var(--transition-smooth) 3s forwards;
+}
+
+.nav__progress-track {
+  width: 200px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.nav__progress-bar {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-secondary), var(--color-accent));
+  border-radius: 2px;
+  transition: width 0.1s linear;
+}
+
+.nav__progress-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.1em;
+  min-width: 40px;
+}
+
+.nav__scroll-hint {
+  position: absolute;
+  bottom: 3rem;
+  left: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  animation: navFadeIn 1s var(--transition-smooth) 3.5s forwards;
+}
+
+.nav__scroll-hint-text {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  color: var(--color-text-muted);
+  writing-mode: vertical-rl;
+}
+
+.nav__scroll-hint-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--color-text-muted), transparent);
+  animation: scrollHint 2s ease-in-out infinite;
+}
+
+@keyframes scrollHint {
+  0%, 100% { opacity: 1; transform: scaleY(1); }
+  50% { opacity: 0.3; transform: scaleY(0.5); }
+}
+
+@keyframes navFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.scene-indicators {
+  position: fixed;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: var(--z-nav);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  pointer-events: none;
+}
+
+.scene-indicators__item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  pointer-events: auto;
+  cursor: pointer;
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
+  padding: 0.25rem 0;
+}
+
+.scene-indicators__item:hover {
+  opacity: 0.6;
+}
+
+.scene-indicators__item.active {
+  opacity: 1;
+}
+
+.scene-indicators__number {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.1em;
+  min-width: 20px;
+}
+
+.scene-indicators__name {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--color-text);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  display: none;
+}
+
+.scene-indicators__item.active .scene-indicators__name {
+  display: block;
+}
+
+@media (max-width: 1024px) {
+  .nav__compass { display: none; }
+  .nav__minimap { display: none; }
+  .nav__progress { display: none; }
+  .nav__scroll-hint { display: none; }
+}
+
+@media (max-width: 768px) {
+  .scene-indicators { display: none; }
+}

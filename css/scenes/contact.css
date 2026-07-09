@@ -1,0 +1,128 @@
+.scene--contact {
+  background: linear-gradient(180deg, #0a0a1a 0%, var(--color-bg) 100%);
+}
+
+.scene--contact .scene__content--contact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  padding: 2rem;
+}
+
+.contact__portal {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  max-width: 90vw;
+  max-height: 90vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+  border-radius: 50%;
+  padding: 2rem;
+}
+
+.contact__portal-ring {
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  animation: portalRotate 20s linear infinite;
+}
+
+.contact__portal-ring::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  border-top-color: var(--color-secondary);
+  border-bottom-color: var(--color-accent);
+  animation: portalRotate 10s linear infinite reverse;
+}
+
+@keyframes portalRotate {
+  to { transform: rotate(360deg); }
+}
+
+.contact__links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.contact__link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: all 0.3s var(--transition-smooth);
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.contact__link:hover {
+  transform: translateY(-5px) scale(1.05);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 30px rgba(100, 255, 218, 0.1);
+}
+
+.contact__link-icon {
+  width: 28px;
+  height: 28px;
+  color: var(--color-text-muted);
+  transition: color 0.3s ease;
+}
+
+.contact__link:hover .contact__link-icon {
+  color: var(--color-secondary);
+}
+
+.contact__link-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.contact__link-text {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  letter-spacing: 0.05em;
+}
+
+.contact__link:hover .contact__link-text {
+  color: var(--color-primary);
+}
+
+@media (max-width: 768px) {
+  .contact__portal {
+    width: 320px;
+    height: 320px;
+  }
+
+  .contact__links {
+    gap: 0.75rem;
+  }
+
+  .contact__link {
+    padding: 0.75rem;
+  }
+
+  .contact__link-icon {
+    width: 22px;
+    height: 22px;
+  }
+}

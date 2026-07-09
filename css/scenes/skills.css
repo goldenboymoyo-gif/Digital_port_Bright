@@ -1,0 +1,42 @@
+.scene--skills {
+  background: linear-gradient(180deg, #0a1a2a 0%, #0a0a0f 50%, #2a1a0a 100%);
+}
+
+.scene--skills .scene__content--skills {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding: 6rem 2rem 2rem;
+  text-align: center;
+}
+
+.skills__labels {
+  position: absolute;
+  bottom: 4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  max-width: 600px;
+}
+
+.skills__labels span {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 0.35rem 0.85rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 100px;
+  color: var(--color-text-muted);
+  transition: all 0.3s ease;
+}
+
+.skills__labels span.is-active {
+  color: var(--color-primary);
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 15px rgba(100, 255, 218, 0.15);
+}

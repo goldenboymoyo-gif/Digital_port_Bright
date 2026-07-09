@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" data-scroll-container>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bright Moyo | Software Developer</title>
+  <meta name="description" content="Cinematic portfolio of Bright Moyo — Software Developer from Victoria Falls, Zimbabwe. Building immersive digital experiences.">
+  <meta name="keywords" content="Bright Moyo, software developer, portfolio, Victoria Falls, Zimbabwe, uncommon.org, Three.js, GSAP">
+  <meta name="author" content="Bright Moyo">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Bright Moyo | Software Developer">
+  <meta property="og:description" content="Cinematic portfolio of Bright Moyo — Software Developer from Victoria Falls, Zimbabwe.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://brightmoyo.dev">
+  <meta property="og:image" content="https://brightmoyo.dev/og-image.jpg">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Bright Moyo | Software Developer">
+  <meta name="twitter:description" content="Cinematic portfolio of Bright Moyo — Software Developer">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Bright Moyo",
+    "jobTitle": "Software Developer",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Victoria Falls",
+      "addressCountry": "Zimbabwe"
+    },
+    "url": "https://brightmoyo.dev",
+    "sameAs": [
+      "https://github.com/goldenboymoyo-gif",
+      "https://linkedin.com/in/bright-moyo-8728b83ab"
+    ]
+  }
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Preload critical assets -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+  <!-- Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.27/bundled/lenis.min.js"></script>
+
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <!-- Three.js full-screen canvas container -->
+  <div id="three-canvas-container" style="position:fixed;inset:0;z-index:0;pointer-events:none"></div>
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor">
+    <div class="cursor__inner cursor__inner--circle"></div>
+    <div class="cursor__inner cursor__inner--dot"></div>
+  </div>
+
+  <!-- Cinematic Loader -->
+  <div class="loader" id="loader">
+    <canvas class="loader__canvas" id="loaderCanvas"></canvas>
+    <div class="loader__content">
+      <div class="loader__progress-container">
+        <div class="loader__progress-bar" id="loaderProgress"></div>
+      </div>
+      <div class="loader__text" id="loaderText">INITIALIZING</div>
+      <div class="loader__percentage" id="loaderPercentage">0%</div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav__compass" id="compass">
+      <div class="nav__compass-ring">
+        <svg viewBox="0 0 100 100" class="nav__compass-svg">
+          <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="0.5" stroke-dasharray="5 5"/>
+          <line x1="50" y1="10" x2="50" y2="90" stroke="#fff" stroke-width="0.5" opacity="0.2"/>
+          <line x1="10" y1="50" x2="90" y2="50" stroke="#fff" stroke-width="0.5" opacity="0.2"/>
+          <polygon points="50,8 46,20 54,20" fill="#fff" id="compassNeedle"/>
+        </svg>
+      </div>
+      <div class="nav__compass-label">SCENE <span id="sceneNumber">1</span>/8</div>
+    </div>
+
+    <div class="nav__minimap" id="minimap">
+      <div class="nav__minimap-dots">
+        <span class="nav__minimap-dot active" data-scene="0"></span>
+        <span class="nav__minimap-dot" data-scene="1"></span>
+        <span class="nav__minimap-dot" data-scene="2"></span>
+        <span class="nav__minimap-dot" data-scene="3"></span>
+        <span class="nav__minimap-dot" data-scene="4"></span>
+        <span class="nav__minimap-dot" data-scene="5"></span>
+        <span class="nav__minimap-dot" data-scene="6"></span>
+        <span class="nav__minimap-dot" data-scene="7"></span>
+      </div>
+    </div>
+
+    <div class="nav__progress">
+      <div class="nav__progress-track">
+        <div class="nav__progress-bar" id="progressBar"></div>
+      </div>
+      <div class="nav__progress-label" id="progressLabel">0%</div>
+    </div>
+
+    <div class="nav__scroll-hint" id="scrollHint">
+      <div class="nav__scroll-hint-text">SCROLL</div>
+      <div class="nav__scroll-hint-line"></div>
+    </div>
+  </nav>
+
+  <!-- Scene indicators -->
+  <div class="scene-indicators" id="sceneIndicators">
+    <div class="scene-indicators__item active" data-scene="0">
+      <span class="scene-indicators__number">01</span>
+      <span class="scene-indicators__name">The Void</span>
+    </div>
+    <div class="scene-indicators__item" data-scene="1">
+      <span class="scene-indicators__number">02</span>
+      <span class="scene-indicators__name">Origin</span>
+    </div>
+    <div class="scene-indicators__item" data-scene="2">
+      <span class="scene-indicators__number">03</span>
+      <span class="scene-indicators__name">Code Forest</span>
+    </div>
+    <div class="scene-indicators__item" data-scene="3">
+      <span class="scene-indicators__number">04</span>
+      <span class="scene-indicators__name">Project Galaxy</span>
+    </div>
+    <div class="scene-indicators__item" data-scene="4">
+      <span class="scene-indicators__number">05</span>
+      <span class="scene-indicators__name">Laboratory</span>
+    </div>
+    <div class="scene-indicators__item" data-scene="5">
+      <span class="scene-indicators__number">06</span>
+      <span class="scene-indicators__name">Skills</span>
+    </div>
+    <div class="scene-indicators__item" data-scene="6">
+      <span class="scene-indicators__number">07</span>
+      <span class="scene-indicators__name">Timeline</span>
+    </div>
+    <div class="scene-indicators__item" data-scene="7">
+      <span class="scene-indicators__number">08</span>
+      <span class="scene-indicators__name">Contact</span>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- SCENE 1: THE VOID -->
+  <!-- ============================================ -->
+  <section class="scene scene--void" id="scene-void" data-scene="0">
+    <div class="scene__canvas-container" id="voidCanvas"></div>
+    <div class="scene__content scene__content--center">
+      <h1 class="scene__title-glitch" data-text="BRIGHT MOYO">BRIGHT MOYO</h1>
+      <p class="scene__subtitle" id="voidSubtitle">Software Developer</p>
+      <p class="scene__location" id="voidLocation">Victoria Falls, Zimbabwe</p>
+      <div class="scene__scroll-cta" id="scrollCta">
+        <span>BEGIN THE JOURNEY</span>
+        <div class="scene__scroll-arrow"></div>
+      </div>
+    </div>
+    <!-- The background 3D scene with particles and text geometry is rendered via Three.js -->
+  </section>
+
+  <!-- ============================================ -->
+  <!-- SCENE 2: ORIGIN -->
+  <!-- ============================================ -->
+  <section class="scene scene--origin" id="scene-origin" data-scene="1">
+    <div class="scene__canvas-container" id="originCanvas"></div>
+    <div class="scene__content scene__content--origin">
+      <div class="origin__text-container" id="originTextContainer">
+        <p class="origin__line" data-delay="0">I build software.</p>
+        <p class="origin__line" data-delay="1.5">I design experiences.</p>
+        <p class="origin__line" data-delay="3">I turn ideas into products.</p>
+        <p class="origin__line" data-delay="4.5">I learn relentlessly.</p>
+      </div>
+      <div class="origin__info">
+        <div class="origin__info-card glass">
+          <span class="origin__info-label">FROM</span>
+          <span class="origin__info-value">Victoria Falls, Zimbabwe</span>
+        </div>
+        <div class="origin__info-card glass">
+          <span class="origin__info-label">EXPERIENCE</span>
+          <span class="origin__info-value">7 Months Professional</span>
+        </div>
+        <div class="origin__info-card glass">
+          <span class="origin__info-label">EDUCATION</span>
+          <span class="origin__info-value">uncommon.org</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- SCENE 3: CODE FOREST -->
+  <!-- ============================================ -->
+  <section class="scene scene--forest" id="scene-forest" data-scene="2">
+    <div class="scene__canvas-container" id="forestCanvas"></div>
+    <div class="scene__content scene__content--forest">
+      <h2 class="scene__heading">Projects</h2>
+      <p class="scene__description">Each tree represents a project. Approach to discover.</p>
+      <!-- Trees rendered in Three.js, overlays rendered as HTML -->
+      <div class="forest__overlay" id="forestOverlay">
+        <div class="forest__project-card glass" id="projectCard">
+          <div class="forest__project-close" id="projectClose">✕</div>
+          <h3 class="forest__project-title" id="projectTitle"></h3>
+          <p class="forest__project-desc" id="projectDesc"></p>
+          <div class="forest__project-tech" id="projectTech"></div>
+          <div class="forest__project-links">
+            <a class="forest__project-link" id="projectDemo" target="_blank" rel="noopener">Live Demo</a>
+            <a class="forest__project-link" id="projectGithub" target="_blank" rel="noopener">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- SCENE 4: PROJECT GALAXY -->
+  <!-- ============================================ -->
+  <section class="scene scene--galaxy" id="scene-galaxy" data-scene="3">
+    <div class="scene__canvas-container" id="galaxyCanvas"></div>
+    <div class="scene__content scene__content--galaxy">
+      <h2 class="scene__heading">Project Galaxy</h2>
+      <p class="scene__description">Click a planet to explore.</p>
+      <!-- Galaxy rendered in Three.js -->
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- SCENE 5: DEVELOPER LABORATORY -->
+  <!-- ============================================ -->
+  <section class="scene scene--laboratory" id="scene-laboratory" data-scene="4">
+    <div class="scene__canvas-container" id="labCanvas"></div>
+    <div class="scene__content scene__content--lab">
+      <div class="lab__ui glass" id="labTerminal">
+        <div class="lab__terminal-header">
+          <span class="lab__terminal-dot lab__terminal-dot--red"></span>
+          <span class="lab__terminal-dot lab__terminal-dot--yellow"></span>
+          <span class="lab__terminal-dot lab__terminal-dot--green"></span>
+          <span class="lab__terminal-title">developer@bright:~/workspace</span>
+        </div>
+        <div class="lab__terminal-body" id="terminalBody">
+          <div class="lab__terminal-line"><span class="lab__terminal-prompt">$</span> <span class="lab__terminal-command">whoami</span></div>
+          <div class="lab__terminal-output">Bright Moyo — Software Developer</div>
+          <div class="lab__terminal-line"><span class="lab__terminal-prompt">$</span> <span class="lab__terminal-command typing" data-text="Building the future..."></span><span class="lab__terminal-cursor">▊</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- SCENE 6: SKILLS CRYSTALS -->
+  <!-- ============================================ -->
+  <section class="scene scene--skills" id="scene-skills" data-scene="5">
+    <div class="scene__canvas-container" id="skillsCanvas"></div>
+    <div class="scene__content scene__content--skills">
+      <h2 class="scene__heading">Skills & Technologies</h2>
+      <p class="scene__description">Hover over crystals to feel their energy.</p>
+      <div class="skills__labels" id="skillsLabels"></div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- SCENE 7: TIMELINE TUNNEL -->
+  <!-- ============================================ -->
+  <section class="scene scene--timeline" id="scene-timeline" data-scene="6">
+    <div class="scene__canvas-container" id="timelineCanvas"></div>
+    <div class="scene__content scene__content--timeline">
+      <div class="timeline__milestones" id="timelineMilestones">
+        <div class="timeline__milestone" data-year="2026">
+          <span class="timeline__year">2026</span>
+          <span class="timeline__event">Started Learning Software Development</span>
+        </div>
+        <div class="timeline__milestone" data-year="2026">
+          <span class="timeline__year">2026</span>
+          <span class="timeline__event">Built TeleVivi — Tourism Platform</span>
+        </div>
+        <div class="timeline__milestone" data-year="2026">
+          <span class="timeline__year">2026</span>
+          <span class="timeline__event">Built HomeLink — Real Estate Platform</span>
+        </div>
+        <div class="timeline__milestone" data-year="2026">
+          <span class="timeline__year">2026</span>
+          <span class="timeline__event">Built BriefWire — News Platform</span>
+        </div>
+        <div class="timeline__milestone" data-year="2026">
+          <span class="timeline__year">2026</span>
+          <span class="timeline__event">Built VFBA Attendance System</span>
+        </div>
+        <div class="timeline__milestone" data-year="2026">
+          <span class="timeline__year">2026</span>
+          <span class="timeline__event">Built Ironvale Construction — Construction Platform</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- SCENE 8: CONTACT PORTAL -->
+  <!-- ============================================ -->
+  <section class="scene scene--contact" id="scene-contact" data-scene="7">
+    <div class="scene__canvas-container" id="contactCanvas"></div>
+    <div class="scene__content scene__content--contact">
+      <h2 class="scene__heading">Let's Create Together</h2>
+      <div class="contact__portal glass" id="contactPortal">
+        <div class="contact__portal-ring"></div>
+        <div class="contact__links" id="contactLinks">
+          <a href="https://github.com/goldenboymoyo-gif" target="_blank" rel="noopener" class="contact__link" data-label="GitHub">
+            <span class="contact__link-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            </span>
+            <span class="contact__link-text">GitHub</span>
+          </a>
+          <a href="https://linkedin.com/in/bright-moyo-8728b83ab" target="_blank" rel="noopener" class="contact__link" data-label="LinkedIn">
+            <span class="contact__link-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </span>
+            <span class="contact__link-text">LinkedIn</span>
+          </a>
+          <a href="mailto:goldenboymoyo@gmail.com" class="contact__link" data-label="Email">
+            <span class="contact__link-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
+            </span>
+            <span class="contact__link-text">Email</span>
+          </a>
+          <a href="tel:+263774765928" class="contact__link" data-label="Phone">
+            <span class="contact__link-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </span>
+            <span class="contact__link-text">+263 774 765 928</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- FOOTER / CREDITS -->
+  <!-- ============================================ -->
+  <footer class="footer">
+    <div class="footer__content">
+      <span class="footer__text">Built with purpose by Bright Moyo</span>
+      <span class="footer__year">2025</span>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/main.js" type="module"></script>
+</body>
+</html>

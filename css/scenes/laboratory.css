@@ -1,0 +1,92 @@
+.scene--laboratory {
+  background: linear-gradient(180deg, #1a0a2a 0%, #0a0a0f 50%, #0a1a2a 100%);
+}
+
+.scene--laboratory .scene__content--lab {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 100vh;
+  padding: 4rem;
+}
+
+.lab__ui {
+  max-width: 480px;
+  width: 100%;
+  padding: 1.5rem;
+  pointer-events: auto;
+  transform: translateY(30px);
+  opacity: 0;
+}
+
+.lab__ui.is-visible {
+  animation: fadeUp 1s var(--transition-smooth) forwards;
+}
+
+.lab__terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 1rem;
+}
+
+.lab__terminal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.lab__terminal-dot--red { background: #ff5f56; }
+.lab__terminal-dot--yellow { background: #ffbd2e; }
+.lab__terminal-dot--green { background: #27c93f; }
+
+.lab__terminal-title {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  margin-left: 0.5rem;
+}
+
+.lab__terminal-body {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.8;
+}
+
+.lab__terminal-line {
+  color: var(--color-text);
+}
+
+.lab__terminal-prompt {
+  color: var(--color-secondary);
+  margin-right: 0.5rem;
+}
+
+.lab__terminal-command {
+  color: var(--color-primary);
+}
+
+.lab__terminal-output {
+  color: var(--color-text-muted);
+  padding-left: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.lab__terminal-cursor {
+  display: inline-block;
+  animation: blink 1s step-end infinite;
+  color: var(--color-secondary);
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+@media (max-width: 768px) {
+  .scene--laboratory .scene__content--lab {
+    justify-content: center;
+    padding: 2rem;
+  }
+}
