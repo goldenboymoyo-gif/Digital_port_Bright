@@ -50,7 +50,7 @@ export class SceneSkills {
     SKILLS.forEach((skill, i) => {
       const crystal = this._createCrystal(skill, i)
       this.crystals.push(crystal)
-      scene.add(crystal.group)
+      scene.add(crystal)
     })
 
     // Ambient particles
@@ -137,28 +137,28 @@ export class SceneSkills {
     this.raycaster.setFromCamera(this.mouse, this.sceneData.camera)
 
     const meshes = []
-    this.crystals.forEach(c => meshes.push(c.group.children[0]))
+    this.crystals.forEach(c => meshes.push(c.children[0]))
     const intersects = this.raycaster.intersectObjects(meshes)
 
     // Reset all
     this.crystals.forEach(c => {
-      const wire = c.group.children[1]
-      const glow = c.group.children[2]
+      const wire = c.children[1]
+      const glow = c.children[2]
       if (wire) wire.material.opacity = 0.3
       if (glow) glow.material.opacity = 0.5
-      this.labelsContainer?.querySelector(`[data-skill="${c.group.userData.skill.name}"]`)?.classList.remove('is-active')
+      this.labelsContainer?.querySelector(`[data-skill="${c.userData.skill.name}"]`)?.classList.remove('is-active')
     })
 
     if (intersects.length > 0) {
       const mesh = intersects[0].object
       for (const c of this.crystals) {
-        if (c.group.children[0] === mesh) {
-          const wire = c.group.children[1]
-          const glow = c.group.children[2]
+        if (c.children[0] === mesh) {
+          const wire = c.children[1]
+          const glow = c.children[2]
           if (wire) wire.material.opacity = 0.8
           if (glow) glow.material.opacity = 1
           this.hoveredCrystal = c
-          this.labelsContainer?.querySelector(`[data-skill="${c.group.userData.skill.name}"]`)?.classList.add('is-active')
+          this.labelsContainer?.querySelector(`[data-skill="${c.userData.skill.name}"]`)?.classList.add('is-active')
           break
         }
       }
@@ -169,9 +169,9 @@ export class SceneSkills {
 
   _onClick(e) {
     if (this.hoveredCrystal) {
-      const skill = this.hoveredCrystal.group.userData.skill
+      const skill = this.hoveredCrystal.userData.skill
       // Pulse animation on click
-      gsap.to(this.hoveredCrystal.group.scale, {
+      gsap.to(this.hoveredCrystal.scale, {
         x: 1.5, y: 1.5, z: 1.5,
         duration: 0.3,
         ease: 'power2.out',
@@ -191,21 +191,21 @@ export class SceneSkills {
     this.particles?.update(time)
 
     this.crystals.forEach((crystal) => {
-      const data = crystal.group.userData
+      const data = crystal.userData
 
       // Float
-      crystal.group.position.y = data.baseY + Math.sin(time * data.floatSpeed + data.phase) * 0.2
+      crystal.position.y = data.baseY + Math.sin(time * data.floatSpeed + data.phase) * 0.2
 
       // Rotate
-      crystal.group.rotation.x += 0.005
-      crystal.group.rotation.y += 0.01
-      crystal.group.rotation.z += 0.003
+      crystal.rotation.x += 0.005
+      crystal.rotation.y += 0.01
+      crystal.rotation.z += 0.003
 
       // Pulse opacity
       data.mat.opacity = 0.7 + Math.sin(time * 1.5 + data.phase) * 0.15
 
       // Energy particles emit from crystal
-      const sprite = crystal.group.children[2]
+      const sprite = crystal.children[2]
       if (sprite) {
         sprite.material.opacity = 0.3 + Math.sin(time * 2 + data.phase) * 0.2
       }
@@ -218,7 +218,7 @@ export class SceneSkills {
     this.particles?.dispose()
     this.crystals.forEach(c => {
       this.sceneData?.scene.remove(c.group)
-      c.group.children.forEach(child => {
+      c.children.forEach(child => {
         if (child.geometry) child.geometry.dispose()
         if (child.material) {
           if (child.material.map) child.material.map.dispose()

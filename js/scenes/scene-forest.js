@@ -100,7 +100,7 @@ export class SceneForest {
     PROJECTS.forEach((project, i) => {
       const tree = this._createTree(project, i)
       this.trees.push(tree)
-      scene.add(tree.group)
+      scene.add(tree)
     })
 
     // Ambient particles

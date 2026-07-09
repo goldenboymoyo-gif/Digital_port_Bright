@@ -60,7 +60,7 @@ export class SceneLaboratory {
     const ctx = canvas.getContext('2d')
     this._drawCodeScreen(ctx)
     const texture = new THREE.CanvasTexture(canvas)
-    const screenMat = new THREE.MeshBasicMaterial({
+    const screenMat = new THREE.MeshStandardMaterial({
       map: texture,
       transparent: true,
       opacity: 0.9,

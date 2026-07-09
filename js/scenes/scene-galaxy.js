@@ -67,7 +67,7 @@ export class SceneGalaxy {
     PLANET_PROJECTS.forEach((proj, i) => {
       const planet = this._createPlanet(proj, i)
       this.planets.push(planet)
-      scene.add(planet.group)
+      scene.add(planet)
     })
 
     // Ambient glow particles
@@ -164,7 +164,7 @@ export class SceneGalaxy {
 
     const meshes = []
     this.planets.forEach(p => {
-      p.group.children.forEach(c => {
+      p.children.forEach(c => {
         if (c.isMesh) meshes.push(c)
       })
     })
@@ -172,7 +172,7 @@ export class SceneGalaxy {
     const intersects = this.raycaster.intersectObjects(meshes)
     if (intersects.length > 0) {
       const planet = intersects[0].object.parent?.parent || intersects[0].object.parent
-      const idx = this.planets.findIndex(p => p.group === planet)
+      const idx = this.planets.findIndex(p => p === planet)
       if (idx >= 0) this._flyToPlanet(idx)
     }
   }
@@ -186,7 +186,7 @@ export class SceneGalaxy {
     this.flyProgress = 0
     this.originalCameraPos.copy(this.sceneData.camera.position)
 
-    const targetPos = planet.group.position.clone()
+    const targetPos = planet.position.clone()
     targetPos.y += 1
     targetPos.z += 3
 
@@ -234,17 +234,17 @@ export class SceneGalaxy {
     }
 
     this.planets.forEach((planet, i) => {
-      const data = planet.group.userData
+      const data = planet.userData
       const angle = data.angle + time * data.orbitSpeed
       const radius = 4
-      planet.group.position.x = Math.cos(angle) * radius
-      planet.group.position.z = Math.sin(angle) * radius
+      planet.position.x = Math.cos(angle) * radius
+      planet.position.z = Math.sin(angle) * radius
 
-      planet.group.rotation.y = time * 0.3
+      planet.rotation.y = time * 0.3
 
       // Pulse atmosphere
-      planet.group.children.forEach(child => {
-        if (child.isMesh && child.geometry.type === 'SphereGeometry' && child.material !== planet.group.children[0]?.material) {
+      planet.children.forEach(child => {
+        if (child.isMesh && child.geometry.type === 'SphereGeometry' && child.material !== planet.children[0]?.material) {
           child.material.opacity = 0.1 + Math.sin(time * 2 + i) * 0.05
         }
       })
@@ -256,8 +256,8 @@ export class SceneGalaxy {
   dispose() {
     this.particles?.dispose()
     this.planets.forEach(p => {
-      this.sceneData?.scene.remove(p.group)
-      p.group.children.forEach(c => {
+      this.sceneData?.scene.remove(p)
+      p.children.forEach(c => {
         if (c.geometry) c.geometry.dispose()
         if (c.material) c.material.dispose()
       })
