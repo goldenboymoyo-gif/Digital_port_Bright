@@ -99,7 +99,7 @@ class App {
 
       gsap.ticker.lagSmoothing(0)
 
-      setTimeout(resolve, 300)
+      resolve()
     })
   }
 
@@ -128,29 +128,15 @@ class App {
 
   _initScenes() {
     this.scenes.void = new SceneVoid(this.threeSetup)
-    this.scenes.void.init()
-
     this.scenes.origin = new SceneOrigin(this.threeSetup)
-    this.scenes.origin.init()
-
     this.scenes.forest = new SceneForest(this.threeSetup)
-    this.scenes.forest.init()
-
     this.scenes.galaxy = new SceneGalaxy(this.threeSetup)
-    this.scenes.galaxy.init()
-
     this.scenes.laboratory = new SceneLaboratory(this.threeSetup)
-    this.scenes.laboratory.init()
-
     this.scenes.skills = new SceneSkills(this.threeSetup)
-    this.scenes.skills.init()
-
     this.scenes.timeline = new SceneTimeline(this.threeSetup)
-    this.scenes.timeline.init()
-
     this.scenes.contact = new SceneContact(this.threeSetup)
-    this.scenes.contact.init()
 
+    this.scenes.void.init()
     this.currentSceneId = 'void'
     this.scenes.void.activate()
   }
@@ -281,8 +267,10 @@ class App {
 
       this.currentSceneId = newId
 
-      if (this.scenes[this.currentSceneId]) {
-        this.scenes[this.currentSceneId].activate()
+      const scene = this.scenes[this.currentSceneId]
+      if (scene) {
+        if (!scene.sceneData) scene.init()
+        scene.activate()
       }
 
       if (this.minimap) this.minimap.update(index)

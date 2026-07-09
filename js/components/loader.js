@@ -102,9 +102,14 @@ export class CinematicLoader {
   }
 
   _simulateLoad(resolve) {
-    const interval = setInterval(() => {
-      const increment = 1 + Math.random() * 4
-      this.progress = Math.min(100, this.progress + increment)
+    const startTime = performance.now()
+    const DURATION = 800
+
+    const tick = () => {
+      const elapsed = performance.now() - startTime
+      const p = Math.min(1, elapsed / DURATION)
+      const eased = 1 - Math.pow(1 - p, 3)
+      this.progress = eased * 100
 
       if (this.progressBar) this.progressBar.style.width = `${this.progress}%`
       if (this.progressText) this.progressText.textContent = `${Math.round(this.progress)}%`
@@ -113,16 +118,18 @@ export class CinematicLoader {
       const stageIndex = Math.min(Math.floor(this.progress / 25), stages.length - 1)
       if (this.loaderText) this.loaderText.textContent = stages[stageIndex]
 
-      if (this.progress >= 100) {
-        clearInterval(interval)
+      if (p >= 1) {
         setTimeout(() => {
           this.isComplete = true
           this.loader?.classList.add('is-hidden')
           if (this.rafId) cancelAnimationFrame(this.rafId)
           resolve()
-        }, 500)
+        }, 200)
+      } else {
+        requestAnimationFrame(tick)
       }
-    }, 200 + Math.random() * 150)
+    }
+    requestAnimationFrame(tick)
   }
 
   updateProgress(value) {
