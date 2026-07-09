@@ -194,8 +194,42 @@ ul, ol {
 }
 
 @media (max-width: 768px) {
+  .scene {
+    min-height: 70vh;
+  }
+
+  .scene__content--center,
+  .scene__content--origin,
+  .scene__content--forest,
+  .scene__content--galaxy,
+  .scene__content--lab,
+  .scene__content--skills,
+  .scene__content--timeline,
+  .scene__content--contact {
+    min-height: 70vh;
+  }
+
+  .scene--forest,
+  .scene--galaxy,
+  .scene--laboratory,
+  .scene--skills {
+    min-height: 55vh;
+  }
+
+  .scene--forest .scene__content--forest,
+  .scene--galaxy .scene__content--galaxy,
+  .scene--laboratory .scene__content--lab,
+  .scene--skills .scene__content--skills {
+    min-height: 55vh;
+  }
+
   .scene__heading {
-    font-size: clamp(1.8rem, 8vw, 2.5rem);
+    font-size: clamp(1.5rem, 7vw, 2rem);
+    margin-bottom: 0.25rem;
+  }
+
+  .scene__description {
+    font-size: 0.85rem;
   }
 
   .scene-indicators {
