@@ -6,10 +6,14 @@ export class Parallax {
   }
 
   init() {
-    document.addEventListener('mousemove', (e) => {
-      this.mouse.x = (e.clientX / window.innerWidth - 0.5) * 2
-      this.mouse.y = (e.clientY / window.innerHeight - 0.5) * 2
-    })
+    this._onPointer = (e) => {
+      const cx = e.touches ? e.touches[0].clientX : e.clientX
+      const cy = e.touches ? e.touches[0].clientY : e.clientY
+      this.mouse.x = (cx / window.innerWidth - 0.5) * 2
+      this.mouse.y = (cy / window.innerHeight - 0.5) * 2
+    }
+    document.addEventListener('mousemove', this._onPointer)
+    document.addEventListener('touchmove', this._onPointer)
     this._animate()
   }
 

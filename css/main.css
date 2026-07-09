@@ -78,6 +78,10 @@ body {
   cursor: none;
 }
 
+body.is-touch {
+  cursor: auto;
+}
+
 a {
   text-decoration: none;
   color: inherit;

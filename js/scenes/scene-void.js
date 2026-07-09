@@ -73,10 +73,15 @@ export class SceneVoid {
 
     this.lights = [pointLight, pointLight2]
 
-    // Handle mouse
-    document.addEventListener('mousemove', (e) => {
-      this.mouseX = (e.clientX / window.innerWidth) * 2 - 1
-      this.mouseY = -(e.clientY / window.innerHeight) * 2 + 1
+    // Handle pointer (mouse + touch)
+    const onPointer = (x, y) => {
+      this.mouseX = (x / window.innerWidth) * 2 - 1
+      this.mouseY = -(y / window.innerHeight) * 2 + 1
+    }
+    document.addEventListener('mousemove', (e) => onPointer(e.clientX, e.clientY))
+    document.addEventListener('touchmove', (e) => {
+      const t = e.touches[0]
+      if (t) onPointer(t.clientX, t.clientY)
     })
 
     // GSAP reveal animations

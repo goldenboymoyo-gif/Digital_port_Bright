@@ -17,6 +17,7 @@ export class CustomCursor {
 
   init() {
     if (!this.cursor || !this.circle || !this.dot) return
+    if ('ontouchstart' in window) { document.body.classList.add('is-touch'); this.cursor.style.display = 'none'; return }
 
     document.addEventListener('mousemove', (e) => {
       this.x = e.clientX

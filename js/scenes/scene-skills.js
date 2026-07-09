@@ -67,6 +67,8 @@ export class SceneSkills {
     // Interaction
     this.container.addEventListener('mousemove', (e) => this._onMouseMove(e))
     this.container.addEventListener('click', (e) => this._onClick(e))
+    this.container.addEventListener('touchmove', (e) => this._onMouseMove(e))
+    this.container.addEventListener('touchend', (e) => this._onClick(e))
 
     // Reveal
     gsap.fromTo(this.heading, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: '#scene-skills', start: 'top 60%' } })
@@ -131,8 +133,10 @@ export class SceneSkills {
   }
 
   _onMouseMove(e) {
-    this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1
-    this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1
+    const cx = e.touches ? e.touches[0].clientX : e.clientX
+    const cy = e.touches ? e.touches[0].clientY : e.clientY
+    this.mouse.x = (cx / window.innerWidth) * 2 - 1
+    this.mouse.y = -(cy / window.innerHeight) * 2 + 1
 
     this.raycaster.setFromCamera(this.mouse, this.sceneData.camera)
 
@@ -168,6 +172,24 @@ export class SceneSkills {
   }
 
   _onClick(e) {
+    if (!this.sceneData) return
+    const cx = e.changedTouches ? e.changedTouches[0].clientX : e.clientX
+    const cy = e.changedTouches ? e.changedTouches[0].clientY : e.clientY
+    this.mouse.x = (cx / window.innerWidth) * 2 - 1
+    this.mouse.y = -(cy / window.innerHeight) * 2 + 1
+    this.raycaster.setFromCamera(this.mouse, this.sceneData.camera)
+    const meshes = []
+    this.crystals.forEach(c => meshes.push(c.children[0]))
+    const intersects = this.raycaster.intersectObjects(meshes)
+    if (intersects.length > 0) {
+      const mesh = intersects[0].object
+      for (const c of this.crystals) {
+        if (c.children[0] === mesh) {
+          this.hoveredCrystal = c
+          break
+        }
+      }
+    }
     if (this.hoveredCrystal) {
       const skill = this.hoveredCrystal.userData.skill
       // Pulse animation on click

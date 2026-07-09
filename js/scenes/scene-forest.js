@@ -117,6 +117,8 @@ export class SceneForest {
     // Interaction
     this.container.addEventListener('click', (e) => this._onClick(e))
     this.container.addEventListener('mousemove', (e) => this._onMouseMove(e))
+    this.container.addEventListener('touchmove', (e) => this._onMouseMove(e))
+    this.container.addEventListener('touchend', (e) => this._onClick(e))
 
     // Project card close
     if (this.projectClose) {
@@ -193,8 +195,10 @@ export class SceneForest {
   }
 
   _onClick(e) {
-    this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1
-    this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1
+    const cx = e.changedTouches ? e.changedTouches[0].clientX : e.clientX
+    const cy = e.changedTouches ? e.changedTouches[0].clientY : e.clientY
+    this.mouse.x = (cx / window.innerWidth) * 2 - 1
+    this.mouse.y = -(cy / window.innerHeight) * 2 + 1
 
     this.raycaster.setFromCamera(this.mouse, this.sceneData.camera)
 
@@ -218,8 +222,10 @@ export class SceneForest {
   }
 
   _onMouseMove(e) {
-    this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1
-    this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1
+    const cx = e.touches ? e.touches[0].clientX : e.clientX
+    const cy = e.touches ? e.touches[0].clientY : e.clientY
+    this.mouse.x = (cx / window.innerWidth) * 2 - 1
+    this.mouse.y = -(cy / window.innerHeight) * 2 + 1
   }
 
   _openProject(index) {
