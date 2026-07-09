@@ -25,7 +25,8 @@ export class ThreeSetup {
       powerPreference: "high-performance"
     })
     this.renderer.setSize(window.innerWidth, window.innerHeight)
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    const maxPx = window.innerWidth < 768 || 'ontouchstart' in window ? 1.5 : 2
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, maxPx))
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping
     this.renderer.toneMappingExposure = 1.0
     this.renderer.outputEncoding = THREE.sRGBEncoding

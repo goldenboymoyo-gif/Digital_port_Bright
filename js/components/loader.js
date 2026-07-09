@@ -103,7 +103,7 @@ export class CinematicLoader {
 
   _simulateLoad(resolve) {
     const startTime = performance.now()
-    const DURATION = 800
+    const DURATION = 300
 
     const tick = () => {
       const elapsed = performance.now() - startTime

@@ -37,8 +37,9 @@ export class SceneGalaxy {
     scene.fog = new THREE.FogExp2(0x0a0a1a, 0.02)
 
     // Galaxy background stars
+    const isMobile = window.innerWidth < 768 || 'ontouchstart' in window
     const starGeo = new THREE.BufferGeometry()
-    const starCount = 4000
+    const starCount = isMobile ? 1200 : 4000
     const pos = new Float32Array(starCount * 3)
     const sizes = new Float32Array(starCount)
     for (let i = 0; i < starCount; i++) {

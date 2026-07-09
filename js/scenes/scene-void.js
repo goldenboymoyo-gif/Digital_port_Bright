@@ -40,8 +40,9 @@ export class SceneVoid {
     scene.fog = new THREE.FogExp2(0x0a0a0f, 0.03)
 
     // Distant stars
+    const isMobile = window.innerWidth < 768 || 'ontouchstart' in window
     const starGeo = new THREE.BufferGeometry()
-    const starCount = 5000
+    const starCount = isMobile ? 1500 : 5000
     const starPos = new Float32Array(starCount * 3)
     for (let i = 0; i < starCount * 3; i++) {
       starPos[i] = (Math.random() - 0.5) * 200

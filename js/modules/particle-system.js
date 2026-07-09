@@ -1,8 +1,10 @@
+const isMobile = window.innerWidth < 768 || 'ontouchstart' in window
+
 export class ParticleSystem {
   constructor(scene, options = {}) {
     this.scene = scene
     this.options = {
-      count: options.count || 2000,
+      count: isMobile ? Math.floor((options.count || 2000) / 3) : (options.count || 2000),
       size: options.size || 0.05,
       radius: options.radius || 10,
       color: options.color || '#64ffda',

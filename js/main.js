@@ -215,12 +215,9 @@ class App {
   _update() {
     const time = this.threeSetup.getElapsedTime()
 
-    const sceneKeys = Object.keys(this.scenes)
-    sceneKeys.forEach((key) => {
-      if (this.scenes[key]) {
-        this.scenes[key].update(time)
-      }
-    })
+    if (this.currentSceneId && this.scenes[this.currentSceneId]) {
+      this.scenes[this.currentSceneId].update(time)
+    }
 
     this.threeSetup.render()
 

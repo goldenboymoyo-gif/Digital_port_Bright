@@ -30,8 +30,9 @@ export class SceneTimeline {
     scene.fog = new THREE.FogExp2(0x0a0a1a, 0.04)
 
     // Tunnel particles - rushing toward camera
+    const isMobile = window.innerWidth < 768 || 'ontouchstart' in window
     const tunnelGeo = new THREE.BufferGeometry()
-    const count = 2000
+    const count = isMobile ? 600 : 2000
     const pos = new Float32Array(count * 3)
     const sizes = new Float32Array(count)
     const speeds = new Float32Array(count)
