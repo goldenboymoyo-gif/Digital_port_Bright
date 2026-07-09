@@ -11,3 +11,9 @@
   padding: 6rem 2rem 2rem;
   text-align: center;
 }
+
+@media (max-width: 768px) {
+  .scene--galaxy .scene__content--galaxy {
+    padding: 2rem 1rem;
+  }
+}

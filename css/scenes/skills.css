@@ -12,6 +12,12 @@
   text-align: center;
 }
 
+@media (max-width: 768px) {
+  .scene--skills .scene__content--skills {
+    padding: 2rem 1rem;
+  }
+}
+
 .skills__labels {
   position: absolute;
   bottom: 4rem;

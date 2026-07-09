@@ -12,6 +12,12 @@
   text-align: center;
 }
 
+@media (max-width: 768px) {
+  .scene--forest .scene__content--forest {
+    padding: 2rem 1rem;
+  }
+}
+
 .forest__overlay {
   position: fixed;
   inset: 0;
